@@ -1,0 +1,15 @@
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\bin\Debug\net10.0\Einkaufsliste.exe
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\bin\Debug\net10.0\Einkaufsliste.deps.json
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\bin\Debug\net10.0\Einkaufsliste.runtimeconfig.json
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\bin\Debug\net10.0\Einkaufsliste.dll
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\bin\Debug\net10.0\Einkaufsliste.pdb
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\obj\Debug\net10.0\Einkaufsliste.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\obj\Debug\net10.0\Einkaufsliste.AssemblyInfoInputs.cache
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\obj\Debug\net10.0\Einkaufsliste.AssemblyInfo.cs
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\obj\Debug\net10.0\Einkaufsliste.csproj.CoreCompileInputs.cache
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\obj\Debug\net10.0\Einkaufsliste.dll
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\obj\Debug\net10.0\refint\Einkaufsliste.dll
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\obj\Debug\net10.0\Einkaufsliste.pdb
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\obj\Debug\net10.0\Einkaufsliste.genruntimeconfig.cache
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\obj\Debug\net10.0\ref\Einkaufsliste.dll
+C:\Users\Capundella Studios\Desktop\Formation C# ( Complet )\Einkaufsliste\Einkaufsliste\obj\Debug\net10.0\Einkaufs.723478EA.Up2Date
