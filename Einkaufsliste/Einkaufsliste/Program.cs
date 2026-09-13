@@ -1,5 +1,14 @@
 ﻿List<string> artikelListe = new List<string>();
 
+if (File.Exists("einkaufsliste.txt"))
+{
+    string[] zeilen = File.ReadAllLines("einkaufsliste.txt");
+    foreach (string zeile in zeilen)
+    {
+        artikelListe.Add(zeile);
+    }
+}
+
 bool weiter = true;
 
 while (weiter)
@@ -24,6 +33,9 @@ while (weiter)
             artikelListe.Add(neuerArtikel);
 
             Console.WriteLine($"{neuerArtikel} wurde hinzugefügt.");
+
+            File.WriteAllLines("einkaufsliste.txt", artikelListe);
+
             break;
 
 
@@ -41,6 +53,8 @@ while (weiter)
                 Console.WriteLine("Fehler: Artikel nicht gefunden.");
             }
 
+            File.WriteAllLines("einkaufsliste.txt", artikelListe);
+
             break;
 
 
@@ -51,6 +65,8 @@ while (weiter)
             {
                 Console.WriteLine($"{i + 1}. {artikelListe[i]}");
             }
+
+            File.WriteAllLines("einkaufsliste.txt", artikelListe);
 
             break;
 
@@ -66,16 +82,26 @@ while (weiter)
                 }
             }
 
+
             break;
 
         case "5":
             Console.WriteLine($"Programm beendet. Insgesamt {artikelListe.Count} Artikel in der Einkaufsliste.");
             weiter = false;
+
+            
+
             break;
 
 
         default:
             Console.WriteLine("Ungültige Auswahl. Bitte 1 bis 5 eingeben.");
+
+          
+
             break;
     }
 }
+
+
+
