@@ -1,4 +1,14 @@
-﻿Dictionary<string, double> nameNote = new Dictionary<string, double>();
+﻿using System.Text.Json;
+
+Dictionary<string, double> nameNote = new Dictionary<string, double>();
+
+if (File.Exists("noten.json"))
+{
+    string json = File.ReadAllText("noten.json");
+    nameNote = JsonSerializer.Deserialize<Dictionary<string, double>>(json);
+}
+
+
 bool weiter = true;
 
 while (weiter)
@@ -26,7 +36,12 @@ while (weiter)
             nameNote.Add(name, note);
 
             Console.WriteLine($"{name} wurde hinzugefügt.");
+
+            string json = JsonSerializer.Serialize(nameNote);
+            File.WriteAllText("noten.json", json);
+
             break;
+
 
         case "2":
             Console.Write("Was ist dein Name:");
