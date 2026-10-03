@@ -1,31 +1,86 @@
-﻿Auto meinAuto = new Auto("BMW", 2020);
-Console.WriteLine(meinAuto.GetMarke());
-Console.WriteLine(meinAuto.GetBaujahr());
+﻿Rechteck neuRechteck = new Rechteck(5, 5, "Rechteck");
+neuRechteck.Anzeigen();
 
-class Auto
+Kreis neuKreis = new Kreis(6, "Kreis");
+neuKreis.Anzeigen();
+
+
+abstract class Form 
+
 {
-    private string marke;
-    private int baujahr;
+    public string Name;
 
-    public Auto(string marke, int baujahr)
+    public Form(string name) 
+    
     {
-
-        this.marke = marke;
-        this.baujahr = baujahr;
-
+        Name = name; 
     }
 
-    public string GetMarke()
-    {
-        return marke;
-    }
+    public abstract double Flaeche();
 
-    public int GetBaujahr()
-    {
-        return baujahr;
+    public abstract double Umfang();
+
+    public void Anzeigen() 
+    
+    { 
+        Console.WriteLine ($"{Name}, {Flaeche():F2}, {Umfang():F2}"); 
+    
     }
 
 
 }
+
+class Rechteck : Form 
+
+{
+    public double Breite;
+    public double Hoehe;
+
+    public Rechteck(double breite, double hoehe, string name ) : base (name)
+    {
+     Breite = breite;
+     Hoehe = hoehe;
+    }
+
+    public override double Flaeche() 
+    
+    {
+        return Breite * Hoehe;
+    }
+
+    public override double Umfang() 
+    { 
+        return 2 * (Breite + Hoehe); 
+    }
+}
+class Kreis : Form 
+
+{
+    public double Radius;
+
+    public Kreis(double radius, string name) : base(name)
+
+    { 
+        Radius = radius;
+    }
+
+    public override double Flaeche()
+    {
+        return Math.PI * Radius * Radius;
+    }
+
+    public override double Umfang()
+    {
+        return 2 * Math.PI * Radius;
+    }
+
+
+
+
+
+}
+
+    
+
 
 
