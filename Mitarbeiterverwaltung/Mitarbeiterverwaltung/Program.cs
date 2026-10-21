@@ -1,14 +1,22 @@
 ﻿using Microsoft.Data.SqlClient;
+using Mitarbeiterverwaltung;
 
 string connectionString = "Server=localhost\\SQLEXPRESS;Database=Formation;Trusted_Connection=True;TrustServerCertificate=True;";
 SqlConnection connection = new SqlConnection(connectionString);
 connection.Open();
 
+MitarbeiterRepository repo = new MitarbeiterRepository(connection);
+
 bool weiter = true;
 
 while (weiter)
+ 
 {
+    Console.Clear();
+    Console.ForegroundColor = ConsoleColor.Cyan;
     Console.WriteLine("\n=== MITARBEITERVERWALTUNG ===");
+    Console.ResetColor();
+
     Console.WriteLine("1. Alle Mitarbeiter anzeigen");
     Console.WriteLine("2. Mitarbeiter suchen");
     Console.WriteLine("3. Neuen Mitarbeiter hinzufügen");
@@ -24,18 +32,16 @@ while (weiter)
     {
         case "1":
             Console.WriteLine("== Liste Alle Mitarbeiter und Abteilungen == ");
-         
-            string sql = "SELECT Vorname, Nachname, Name AS Abteilung, Gehalt FROM Mitarbeiter INNER JOIN Abteilung ON Mitarbeiter.AbteilungID = Abteilung.AbteilungID";
-            SqlCommand command = new SqlCommand(sql, connection);
+           
+            List<Mitarbeiter> liste = repo.GetAll();
 
-            SqlDataReader reader = command.ExecuteReader(); 
-            while (reader.Read()) 
-            
+            foreach (Mitarbeiter m in liste)
             {
-                Console.WriteLine($" {reader["Vorname"]} - {reader["Nachname"]} - {reader["Abteilung"]} - {reader["Gehalt"]} Euro");
+                m.Anzeigen();
+            }
 
-            }           
-             reader.Close();
+            Console.WriteLine("\nDrücken Sie eine Taste...");
+            Console.ReadKey();
 
             break;
 
@@ -45,96 +51,191 @@ while (weiter)
             Console.Write("Vorname eingeben: ");
             string vorname = Console.ReadLine();
 
+            bool gefunden = false;
+
             string sqlSuche = $"SELECT Vorname, Nachname FROM Mitarbeiter WHERE Vorname LIKE '%{vorname}%'";
             SqlCommand commandSuche = new SqlCommand(sqlSuche, connection);
 
             SqlDataReader reader2 = commandSuche.ExecuteReader();
 
-            while(reader2.Read()) 
-            
+            while (reader2.Read())
+
             {
+                gefunden = true;
 
                 Console.WriteLine($"{reader2["Vorname"]} - {reader2["Nachname"]}");
 
             }
+
             reader2.Close();
+
+            if (!gefunden) 
+            
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Kein Mitarbeiter gefunden");
+                Console.ResetColor();
+                                
+            }
+                           
+            Console.WriteLine("\nDrücken Sie eine Taste...");
+            Console.ReadKey(true);
 
             break;
 
         case "3":
 
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("== Neuen Mitarbeiter hinzufügen ==");
+            Console.ResetColor();
+            
+            try
+            {
+                Console.Write("Vorname eingeben: ");
+                string neueVorname = Console.ReadLine();
 
-            Console.Write("Vorname eingeben: ");
-            string neueVorname = Console.ReadLine();
+                Console.Write("Nachname eingeben: ");
+                string neueNachname = Console.ReadLine();
 
-            Console.Write("Nachname eingeben: ");
-            string neueNachname= Console.ReadLine();
+                Console.Write("AbteilungID eingeben: ");
+                int neueAbteilung = Convert.ToInt32(Console.ReadLine());
 
-            Console.Write("AbteilungID eingeben: ");
-            int neueAbteilung= Convert.ToInt32(Console.ReadLine());
+                Console.Write("Gehalt eingeben: ");
+                decimal neuesGehalt = Convert.ToDecimal(Console.ReadLine());
 
-            Console.Write("Gehalt eingeben: ");
-            decimal neuesGehalt = Convert.ToDecimal(Console.ReadLine());
+                Console.Write("Eintrittsdatum eingeben: ");
+                DateTime neuesEintrittsdatum = Convert.ToDateTime(Console.ReadLine());
 
-            Console.Write("Eintrittsdatun eingeben: ");
-            DateTime neuesEintrittsdatum = Convert.ToDateTime(Console.ReadLine());
+                Mitarbeiter neuer = new Mitarbeiter(0, neueVorname, neueNachname, neueAbteilung, neuesGehalt, neuesEintrittsdatum);
 
-            string sqlHinzufugen = $"INSERT INTO Mitarbeiter (Vorname, Nachname, AbteilungID, Gehalt, Eintrittsdatum) VALUES ('{neueVorname}','{neueNachname}', {neueAbteilung} ,{neuesGehalt},'{neuesEintrittsdatum}')";
-            SqlCommand commandHinzufugen = new SqlCommand(sqlHinzufugen, connection);
+                repo.Add(neuer);
 
-            commandHinzufugen.ExecuteNonQuery();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Mitarbeiter Hinzugefügt");                 
 
-            Console.WriteLine("Mitarbeiter Hinzugefügt");
+            }
+
+            catch (FormatException)
+
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Ungültige Eingabe!");
+                Console.ResetColor();
+                
+            }
+
+            finally 
+            
+            {
+                Console.WriteLine("\nDrücken Sie eine Taste...");
+                Console.ReadKey(true);
+
+                Console.ResetColor();
+            
+            }
 
             break;
 
         case "4":
 
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine( " == Mitarbeiter bearbeiten == " );
+            Console.ResetColor();
 
-            Console.Write("MitarbeiterID Eingeben: ");
-            int mitarbeiterID = Convert.ToInt32(Console.ReadLine());
+            try
 
+            {
+               
+                Console.Write("MitarbeiterID Eingeben: ");
+                int mitarbeiterID = Convert.ToInt32(Console.ReadLine());
+              
+                Console.Write("Vorname ändern: ");
+                string updateVorname = Console.ReadLine();
 
-            Console.Write("Vorname ändern: ");
-            string updateVorname = Console.ReadLine();
+                Console.Write("Nachname ändern: ");
+                string updateNachname = Console.ReadLine();
 
-            Console.Write("Nachname ändern: ");
-            string updateNachname = Console.ReadLine();
+                Console.Write("AbteilungID ändern: ");
+                int updateAbteilung = Convert.ToInt32(Console.ReadLine());
 
-            Console.Write("AbteilungID ändern: ");
-            int updateAbteilung = Convert.ToInt32(Console.ReadLine());
+                Console.Write("Gehalt ändern: ");
+                decimal updateGehalt = Convert.ToDecimal(Console.ReadLine());
 
-            Console.Write("Gehalt ändern: ");
-            decimal updateGehalt = Convert.ToDecimal(Console.ReadLine());
+                Console.Write("Eintrittsdatum ändern: ");
+                DateTime updateEintrittsdatum = Convert.ToDateTime(Console.ReadLine());
 
-            Console.Write("Eintrittsdatun ändern: ");
-            DateTime updateEintrittsdatum = Convert.ToDateTime(Console.ReadLine());
+                Mitarbeiter update = new Mitarbeiter(mitarbeiterID, updateVorname, updateNachname, updateAbteilung, updateGehalt, updateEintrittsdatum);
 
-            string sqlUpdate = $" UPDATE Mitarbeiter  SET Vorname = '{updateVorname}', Nachname = '{updateNachname}', AbteilungID = {updateAbteilung}, Gehalt = {updateGehalt}, Eintrittsdatum = '{updateEintrittsdatum}' WHERE MitarbeiterID = {mitarbeiterID}";
-            SqlCommand updateCommand = new SqlCommand (sqlUpdate, connection);
+                repo.Update(update);
 
-            updateCommand.ExecuteNonQuery();
+                Console.ForegroundColor= ConsoleColor.Green;
+                Console.WriteLine("Änderung abgeschlossen");
 
-            Console.WriteLine("Änderung abgeschlossen");
+            }
+
+            catch (FormatException) 
+            
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Ungültige Eingabe!");
+                    
+            }
+
+            finally 
+            
+            {
+                Console.WriteLine("\nDrücken Sie eine Taste...");
+                Console.ReadKey(true);
+
+                Console.ResetColor();
+            
+            }
 
             break;
 
         case "5":
 
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(" == Mitarbeiter löschen == ");
+            Console.ResetColor();
 
-            Console.Write("Mitarbeiter Vorname eingeben: ");
-            string deleteVorname = Console.ReadLine();
+            try
+            {
+                Console.Write("Mitarbeiter ID eingeben: ");
+                int deleteID = Convert.ToInt32(Console.ReadLine());
 
+                int result = repo.Delete(deleteID);
 
-            string deleteSql = $"DELETE FROM Mitarbeiter WHERE Vorname = '{deleteVorname}'";
-            SqlCommand deleteCommand = new SqlCommand (deleteSql, connection);
+                if (result > 0)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Mitarbeiter gelöscht");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Kein Mitarbeiter mit dieser ID gefunden");
+                }
 
-            deleteCommand.ExecuteNonQuery();
+            }
 
-            Console.WriteLine("Mitarbeiter wurde gelöscht");
+            catch (FormatException)
+
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Ungültige Eingabe!");
+            }
+
+          
+
+            finally
+
+            {
+                Console.WriteLine("\nDrücken Sie eine Taste...");
+                Console.ReadKey(true);
+
+                Console.ResetColor();
+            }
 
             break;
 
@@ -166,6 +267,8 @@ while (weiter)
             }
             reader4.Close();
 
+            Console.WriteLine("\nDrücken Sie eine Taste...");
+            Console.ReadKey(true);
 
             break;
 
